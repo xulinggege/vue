@@ -7,6 +7,9 @@ Vue.component('demo-grid', {
     columns: Array,
     filterKey: String
   },
+  render(h){
+   return h('div','新的视频内容。')
+  },
   data: function () {
     var sortOrders = {}
     this.columns.forEach(function (key) {
