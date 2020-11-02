@@ -21,6 +21,7 @@ export function initAssetRegisters (Vue: GlobalAPI) {
         }
         if (type === 'component' && isPlainObject(definition)) {
           definition.name = definition.name || id
+          //为什么这个地方不直接用 this，而非要用this.options._base。他们明明是相等的啊
           definition = this.options._base.extend(definition)
         }
         if (type === 'directive' && typeof definition === 'function') {
