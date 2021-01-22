@@ -31,7 +31,7 @@ export default class VNode {
 
   constructor (
     tag?: string,
-    data?: VNodeData,
+    data?: VNodeData,   //这个data是存储什么的？
     children?: ?Array<VNode>,
     text?: string,
     elm?: Node,

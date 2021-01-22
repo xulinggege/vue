@@ -64,10 +64,10 @@ export function lifecycleMixin (Vue: Class<Component>) {
     vm._vnode = vnode
     // Vue.prototype.__patch__ is injected in entry points
     // based on the rendering backend used.
-    if (!prevVnode) {
+    if (!prevVnode) { //这是首次渲染
       // initial render
       vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */)
-    } else {
+    } else {  //不是首次渲染，是更新渲染。
       // updates
       vm.$el = vm.__patch__(prevVnode, vnode)
     }

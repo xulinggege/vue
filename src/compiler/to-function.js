@@ -9,6 +9,7 @@ type CompiledFunctionResult = {
   staticRenderFns: Array<Function>;
 };
 
+//将字符串转为函数
 function createFunction (code, errors) {
   try {
     return new Function(code)

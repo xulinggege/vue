@@ -4487,7 +4487,7 @@
         traverse(value);
       }
       popTarget();
-      this.cleanupDeps();
+      this.cleanupDeps();//从这个接口命名来看，就是要清除依赖。那为什么要清除依赖？因为这是一个循环递归操作。一个组件的下一个组件会继续，生成watcher对象。而且是在这个watcher对象没有生成结束的时候。
     }
     return value
   };
@@ -5227,6 +5227,7 @@
           }
           if (type === 'component' && isPlainObject(definition)) {
             definition.name = definition.name || id;
+            //为什么这个地方不直接用 this，而非要用this.options._base。他们明明是相等的啊
             definition = this.options._base.extend(definition);
           }
           if (type === 'directive' && typeof definition === 'function') {
@@ -5386,6 +5387,7 @@
         );
       };
     }
+    //给全局的Vue添加了一个config的
     Object.defineProperty(Vue, 'config', configDef);
 
     // exposed util methods.
@@ -5398,16 +5400,21 @@
       defineReactive: defineReactive
     };
 
+    //全局注册set和del方法，以及nextTick方法
     Vue.set = set;
     Vue.delete = del;
     Vue.nextTick = nextTick;
 
+    //添加响应式方法。如果这个是相应式的，那么他的相应式回调的函数在哪里？
     // 2.6 explicit observable API
     Vue.observable = function (obj) {
       observe(obj);
       return obj
     };
 
+    //在Vue函数上直接添加options属性。并为这个属性添加component，directive,filter等属性。
+    //这些Vue方法上的属性有啥用呢？ 它和Vue提供的全局函数Vue.component, Vue.directive,以及Vue.filter直接有什么关联）
+    //他们直接的关联就是Vue.component, Vue.directive,以及Vue.filter注册的全局组件，指令，以及过滤器都会存储到Vue.options里面来
     Vue.options = Object.create(null);
     ASSET_TYPES.forEach(function (type) {
       Vue.options[type + 's'] = Object.create(null);
@@ -5415,12 +5422,17 @@
 
     // this is used to identify the "base" constructor to extend all plain-object
     // components with in Weex's multi-instance scenarios.
+    //一个很神奇的操作。看在weex中怎么使用。
     Vue.options._base = Vue;
 
+    //把对象的属性拷贝到所有的里面.注册了一个内置组件keep-alive
     extend(Vue.options.components, builtInComponents);
 
+    //注册Vue.use() 方法用来注册插件
     initUse(Vue);
+    //注册Vue.mixin() 实现混入
     initMixin$1(Vue);
+    //注册 Vue.extend() 基于传入的options返回一个组件的构造函数
     initExtend(Vue);
     initAssetRegisters(Vue);
   }
@@ -9033,7 +9045,9 @@
   Vue.config.isUnknownElement = isUnknownElement;
 
   // install platform runtime directives & components
+  //注册全局指令 （v-model）,(v-show)
   extend(Vue.options.directives, platformDirectives);
+  //注册全局组件 (v-transition, v-transitionGroup) 
   extend(Vue.options.components, platformComponents);
 
   // install platform patch function
@@ -11655,6 +11669,7 @@
 
 
 
+  //将字符串转为函数
   function createFunction (code, errors) {
     try {
       return new Function(code)

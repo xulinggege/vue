@@ -33,12 +33,12 @@ export function createElement (
   normalizationType: any,
   alwaysNormalize: boolean
 ): VNode | Array<VNode> {
-  if (Array.isArray(data) || isPrimitive(data)) {
+  if (Array.isArray(data) || isPrimitive(data)) {   //是数组或者原始值。把data设置为children的值。
     normalizationType = children
     children = data
     data = undefined
   }
-  if (isTrue(alwaysNormalize)) {
+  if (isTrue(alwaysNormalize)) {  //$createElement调用的时候传递的是true,_c调用的时候传递的是false。用户直接调用的时候
     normalizationType = ALWAYS_NORMALIZE
   }
   return _createElement(context, tag, data, children, normalizationType)
@@ -87,7 +87,8 @@ export function _createElement (
     data.scopedSlots = { default: children[0] }
     children.length = 0
   }
-  if (normalizationType === ALWAYS_NORMALIZE) {
+
+  if (normalizationType === ALWAYS_NORMALIZE) { //用户传递过来的render函数
     children = normalizeChildren(children)
   } else if (normalizationType === SIMPLE_NORMALIZE) {
     children = simpleNormalizeChildren(children)

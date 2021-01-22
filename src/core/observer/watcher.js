@@ -117,7 +117,7 @@ export default class Watcher {
         traverse(value)
       }
       popTarget()
-      this.cleanupDeps()
+      this.cleanupDeps()  //从这个接口命名来看，就是要清除依赖。那为什么要清除依赖？因为这是一个循环递归操作。一个组件的下一个组件会继续，生成watcher对象。而且是在这个watcher对象没有生成结束的时候。
     }
     return value
   }

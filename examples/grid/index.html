@@ -33,20 +33,52 @@
       </table>
       <p v-else>No matches found.</p>
     </script>
-
-    <!-- demo root element -->
-    <div id="demo">
-      <form id="search">
-        Search <input name="query" v-model="searchQuery">
-      </form>
-      <demo-grid
-        :data="gridData"
-        :columns="gridColumns"
-        :filter-key="searchQuery">
-      </demo-grid>
-    </div>
-
+    <div id="demo"></div>
+    <!-- <div style="width: 300px; height: 44px;display: inline-block;position: absolute;white-space: nowrap;">
+      <div style="display: flex;justify-content: center;align-items: center;
+        height: 100%;">
+          <span style="overflow: hidden;text-overflow: ellipsis;background-color: red;flex-grow: 1;">
+            <div style="background-color: yellow; min-width: 60px;">
+              我是内容
+            </div>
+        </span>
+      </div>
+    </div> -->
+   
     <script src="grid.js"></script>
-
   </body>
 </html>
+<style>
+  .container {
+  width: 300px;
+  background: red;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.column {
+  min-width: 0;
+  flex-basis: 50%;
+}
+
+.column p {
+  background: gold;
+  
+  /* Will not work in Firefox Nightly 35.0a1 */
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.my-span{
+  display: inline-block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+</style>
+

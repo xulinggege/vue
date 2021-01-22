@@ -1,4 +1,5 @@
 /* @flow */
+//代码生成器。所有的生成dom的代码就在这里了。
 
 import { genHandlers } from './events'
 import baseDirectives from '../directives/index'

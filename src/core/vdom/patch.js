@@ -125,8 +125,8 @@ export function createPatchFunction (backend) {
   function createElm (
     vnode,
     insertedVnodeQueue,
-    parentElm,
-    refElm,
+    parentElm,  //append到
+    refElm,//下一个兄弟节点。插入兄弟节点之前
     nested,
     ownerArray,
     index
@@ -148,7 +148,7 @@ export function createPatchFunction (backend) {
     const data = vnode.data
     const children = vnode.children
     const tag = vnode.tag
-    if (isDef(tag)) {
+    if (isDef(tag)) {   //有tag属性，就是原始的dom标签
       if (process.env.NODE_ENV !== 'production') {
         if (data && data.pre) {
           creatingElmInVPre++
@@ -198,10 +198,10 @@ export function createPatchFunction (backend) {
       if (process.env.NODE_ENV !== 'production' && data && data.pre) {
         creatingElmInVPre--
       }
-    } else if (isTrue(vnode.isComment)) {
+    } else if (isTrue(vnode.isComment)) { //是否一个注释节点
       vnode.elm = nodeOps.createComment(vnode.text)
       insert(parentElm, vnode.elm, refElm)
-    } else {
+    } else {//文本节点
       vnode.elm = nodeOps.createTextNode(vnode.text)
       insert(parentElm, vnode.elm, refElm)
     }
@@ -706,7 +706,7 @@ export function createPatchFunction (backend) {
     let isInitialPatch = false
     const insertedVnodeQueue = []
 
-    if (isUndef(oldVnode)) {
+    if (isUndef(oldVnode)) {  //直接调用$mount()。不传递dom元素
       // empty mount (likely as component), create new root element
       isInitialPatch = true
       createElm(vnode, insertedVnodeQueue)
@@ -748,9 +748,10 @@ export function createPatchFunction (backend) {
         const parentElm = nodeOps.parentNode(oldElm)
 
         // create new node
+        //创建dom节点
         createElm(
-          vnode,
-          insertedVnodeQueue,
+          vnode,    //vnode
+          insertedVnodeQueue,  //vode的插入回调函数
           // extremely rare edge case: do not insert if old element is in a
           // leaving transition. Only happens when combining transition +
           // keep-alive + HOCs. (#4590)
@@ -796,7 +797,7 @@ export function createPatchFunction (backend) {
         }
       }
     }
-
+    //触发队列中的insert钩子函数
     invokeInsertHook(vnode, insertedVnodeQueue, isInitialPatch)
     return vnode.elm
   }
