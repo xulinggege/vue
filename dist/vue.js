@@ -1,6 +1,6 @@
 /*!
  * Vue.js v2.6.12
- * (c) 2014-2020 Evan You
+ * (c) 2014-2021 Evan You
  * Released under the MIT License.
  */
 (function (global, factory) {
@@ -766,7 +766,7 @@
 
   var VNode = function VNode (
     tag,
-    data,
+    data, //这个data是存储什么的？
     children,
     text,
     elm,
@@ -3346,12 +3346,12 @@
     normalizationType,
     alwaysNormalize
   ) {
-    if (Array.isArray(data) || isPrimitive(data)) {
+    if (Array.isArray(data) || isPrimitive(data)) {   //是数组或者原始值。把data设置为children的值。
       normalizationType = children;
       children = data;
       data = undefined;
     }
-    if (isTrue(alwaysNormalize)) {
+    if (isTrue(alwaysNormalize)) {  //$createElement调用的时候传递的是true,_c调用的时候传递的是false。用户直接调用的时候
       normalizationType = ALWAYS_NORMALIZE;
     }
     return _createElement(context, tag, data, children, normalizationType)
@@ -3400,7 +3400,8 @@
       data.scopedSlots = { default: children[0] };
       children.length = 0;
     }
-    if (normalizationType === ALWAYS_NORMALIZE) {
+
+    if (normalizationType === ALWAYS_NORMALIZE) { //用户传递过来的render函数
       children = normalizeChildren(children);
     } else if (normalizationType === SIMPLE_NORMALIZE) {
       children = simpleNormalizeChildren(children);
@@ -3938,10 +3939,10 @@
       vm._vnode = vnode;
       // Vue.prototype.__patch__ is injected in entry points
       // based on the rendering backend used.
-      if (!prevVnode) {
+      if (!prevVnode) { //这是首次渲染
         // initial render
         vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */);
-      } else {
+      } else {  //不是首次渲染，是更新渲染。
         // updates
         vm.$el = vm.__patch__(prevVnode, vnode);
       }
@@ -5914,8 +5915,8 @@
     function createElm (
       vnode,
       insertedVnodeQueue,
-      parentElm,
-      refElm,
+      parentElm,  //append到
+      refElm,//下一个兄弟节点。插入兄弟节点之前
       nested,
       ownerArray,
       index
@@ -5937,7 +5938,7 @@
       var data = vnode.data;
       var children = vnode.children;
       var tag = vnode.tag;
-      if (isDef(tag)) {
+      if (isDef(tag)) {   //有tag属性，就是原始的dom标签
         {
           if (data && data.pre) {
             creatingElmInVPre++;
@@ -5969,10 +5970,10 @@
         if ( data && data.pre) {
           creatingElmInVPre--;
         }
-      } else if (isTrue(vnode.isComment)) {
+      } else if (isTrue(vnode.isComment)) { //是否一个注释节点
         vnode.elm = nodeOps.createComment(vnode.text);
         insert(parentElm, vnode.elm, refElm);
-      } else {
+      } else {//文本节点
         vnode.elm = nodeOps.createTextNode(vnode.text);
         insert(parentElm, vnode.elm, refElm);
       }
@@ -6479,7 +6480,7 @@
       var isInitialPatch = false;
       var insertedVnodeQueue = [];
 
-      if (isUndef(oldVnode)) {
+      if (isUndef(oldVnode)) {  //直接调用$mount()。不传递dom元素
         // empty mount (likely as component), create new root element
         isInitialPatch = true;
         createElm(vnode, insertedVnodeQueue);
@@ -6521,9 +6522,10 @@
           var parentElm = nodeOps.parentNode(oldElm);
 
           // create new node
+          //创建dom节点
           createElm(
-            vnode,
-            insertedVnodeQueue,
+            vnode,    //vnode
+            insertedVnodeQueue,  //vode的插入回调函数
             // extremely rare edge case: do not insert if old element is in a
             // leaving transition. Only happens when combining transition +
             // keep-alive + HOCs. (#4590)
@@ -6569,7 +6571,7 @@
           }
         }
       }
-
+      //触发队列中的insert钩子函数
       invokeInsertHook(vnode, insertedVnodeQueue, isInitialPatch);
       return vnode.elm
     }

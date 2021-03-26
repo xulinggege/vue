@@ -113,3 +113,4 @@ export function createCompileToFunctionFn (compile: Function): Function {
     return (cache[key] = res)
   }
 }
+

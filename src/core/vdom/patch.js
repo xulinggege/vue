@@ -511,7 +511,7 @@ export function createPatchFunction (backend) {
     }
 
     if (isDef(vnode.elm) && isDef(ownerArray)) {
-      // clone reused vnode
+      // clone reused vnode. 这个vnode为什么会有elm元素，然后有这个elm元素后，需要重新克隆一下这个vnode
       vnode = ownerArray[index] = cloneVNode(vnode)
     }
 
