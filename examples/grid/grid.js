@@ -75,9 +75,15 @@ var demo = new Vue({
         :data="gridData"
         :columns="gridColumns"
         :filter-key="searchQuery">
-      </demo-grid>
+      </demo-grid><demo-grid
+      v-if="showGrid"
+     :data="gridData"
+     :columns="gridColumns"
+     :filter-key="searchQuery">
+   </demo-grid>
     </div>
   `,
+  name:'root',
   data(param) {
     console.log(param);
     return {

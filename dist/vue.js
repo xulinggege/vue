@@ -4975,6 +4975,7 @@
       vm._isVue = true;
       // merge options
       if (options && options._isComponent) {
+        console.log("🚀 ~ file: init.js ~ line 33 ~ initMixin ~ options._isComponent", options._isComponent);
         // optimize internal component instantiation
         // since dynamic options merging is pretty slow, and none of the
         // internal component options needs special treatment.
@@ -4984,7 +4985,9 @@
           resolveConstructorOptions(vm.constructor),
           options || {},
           vm
-        );
+          );
+        console.log("🚀 ~ file: init.js ~ line 40 ~ initMixin ~ vm.$options", vm.$options);
+        
       }
       /* istanbul ignore else */
       {
@@ -6283,7 +6286,7 @@
       }
 
       if (isDef(vnode.elm) && isDef(ownerArray)) {
-        // clone reused vnode
+        // clone reused vnode. 这个vnode为什么会有elm元素，然后有这个elm元素后，需要重新克隆一下这个vnode
         vnode = ownerArray[index] = cloneVNode(vnode);
       }
 
@@ -11990,4 +11993,3 @@
   return Vue;
 
 })));
-//# sourceMappingURL=vue.js.map

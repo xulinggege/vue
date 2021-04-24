@@ -30,6 +30,7 @@ export function initMixin (Vue: Class<Component>) {
     vm._isVue = true
     // merge options
     if (options && options._isComponent) {
+      console.log("🚀 ~ file: init.js ~ line 33 ~ initMixin ~ options._isComponent", options._isComponent)
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the
       // internal component options needs special treatment.
@@ -39,7 +40,9 @@ export function initMixin (Vue: Class<Component>) {
         resolveConstructorOptions(vm.constructor),
         options || {},
         vm
-      )
+        )
+      console.log("🚀 ~ file: init.js ~ line 40 ~ initMixin ~ vm.$options", vm.$options)
+      
     }
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
